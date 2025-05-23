@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://cd015igmnthei"]
+
+[ext_resource type="Texture2D" uid="uid://cv2ishxs8rhg6" path="res://art/playerGrey_up1.png" id="1_hqtel"]
+[ext_resource type="Script" uid="uid://bssrkurt3odd0" path="res://player.gd" id="1_sweqy"]
+[ext_resource type="Texture2D" uid="uid://c5awb06gqe4nu" path="res://art/playerGrey_up2.png" id="2_sweqy"]
+[ext_resource type="Texture2D" uid="uid://11imralyn22f" path="res://art/playerGrey_walk1.png" id="3_2hs0m"]
+[ext_resource type="Texture2D" uid="uid://c140khbt4kx6w" path="res://art/playerGrey_walk2.png" id="4_1jxqw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dw050"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hqtel")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_sweqy")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_2hs0m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_1jxqw")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b26j0"]
+radius = 27.0
+height = 68.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sweqy"]
+bg_color = Color(0.0196078, 0.85098, 0.341176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Player" type="Area2D"]
+position = Vector2(105, 125)
+script = ExtResource("1_sweqy")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_dw050")
+animation = &"up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_b26j0")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -25.0
+offset_top = -50.0
+offset_right = 25.0
+offset_bottom = -40.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_sweqy")
+max_value = 3.0
+show_percentage = false
+
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
+
+[node name="BlinkTimer" type="Timer" parent="."]
+wait_time = 0.25
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="hit" from="." to="." method="_on_hit"]
